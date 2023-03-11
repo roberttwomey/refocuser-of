@@ -332,11 +332,11 @@ void ofApp::loadXMLScene(string scenefile) {
     yoffset = 0;
 
     // read these from the settings file
-//    // debug information (text, mouse, thumbnail) //
-//    bShowThumbnail = (xml.getValue("drawthumbnail", 0) > 0);
-//    bHideCursor = (xml.getValue("hidecursor", 0) > 0);
-//    bDebug = (xml.getValue("debug", 0) > 0);
-//
+   // debug information (text, mouse, thumbnail) //
+   bShowThumbnail = (xml.getValue("drawthumbnail", 0) > 0);
+   bHideCursor = (xml.getValue("hidecursor", 0) > 0);
+   bDebug = (xml.getValue("debug", 0) > 0);
+
 //    // osc receiving
 //    port = xml.getValue("oscport", 12345);
 
@@ -360,10 +360,6 @@ void ofApp::loadLightfieldData() {
     for(int i=0; i < numlftextures; i++) {
         ofLoadImage(lfplanes[i], lffilenames[i]);
         ofLog(OF_LOG_NOTICE, "loaded texture "+ ofToString(i) + " from " + lffilenames[i]);
-//        lfplanes[i].setTextureWrap(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);//GL_REPEAT, GL_REPEAT);//
-//        GLfloat border[4]={0, 1, 0, 0};
-//        glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border);
-        //lfplanes[i].setTextureMinMagFilter(GL_LINEAR, GL_LINEAR);//NEAREST, GL_NEAREST);
     }
 
     ofLog(OF_LOG_NOTICE, "done loading textures.");
@@ -374,10 +370,6 @@ void ofApp::freeLightfieldData() {
     for(int i=0; i < numlftextures; i++) {
         lfplanes[i].clear();
         ofLog(OF_LOG_NOTICE, "cleared texture "+ ofToString(i));
-        //  lfplanes[i].setTextureWrap(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);//GL_REPEAT, GL_REPEAT);//
-//        GLfloat border[4]={0, 1, 0, 0};
-//        glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border);
-        //lfplanes[i].setTextureMinMagFilter(GL_LINEAR, GL_LINEAR);//NEAREST, GL_NEAREST);
     }
 
     ofLog(OF_LOG_NOTICE, "done freeing textures.");
@@ -653,6 +645,7 @@ void ofApp::keyPressed(int key){
         } else {
             ofShowCursor();
         };
+        cout << "m " << bHideCursor << endl;
     }
 
     if(key == 'd') {
