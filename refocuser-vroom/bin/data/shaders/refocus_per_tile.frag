@@ -113,10 +113,5 @@ void main (void){
     else
         fragColor = vec4(0.0);
 
-//    if(count > 0)
-//        fragColor = vec4(color.rgb, 1.0);
-//    else
-//        fragColor = vec4(0.0);
-
 }
 

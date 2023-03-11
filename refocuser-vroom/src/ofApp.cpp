@@ -150,9 +150,15 @@ void ofApp::draw(){
     // float width = height/1080.0*3840;
     // float xoff = (ofGetWindowWidth() - width)/2;
 
-    float width = ofGetWindowWidth();
-    float height = width / SCREEN_WIDTH * SCREEN_HEIGHT;
-    float yoff = (ofGetWindowHeight() - height)/2.0;
+    // float width = ofGetWindowWidth();
+    // // float height = width / SCREEN_WIDTH * SCREEN_HEIGHT;
+    // float height = width / screen_width * screen_height;
+    // float yoff = (ofGetWindowHeight() - height)/2.0;
+
+    float height = ofGetWindowHeight();
+    float width = height/screen_height * screen_width;
+    float yoff = 0;
+
 
     // draw with transparency to fade
     ofSetColor(255, 255 * (1.0 - ofClamp(fade, 0.0, 1.0)));
@@ -268,6 +274,9 @@ void ofApp::loadXMLSettings(string settingsfile) {
         screen_width = xml.getValue("screenwidth", screen_width);
         screen_height = xml.getValue("screenheight", screen_height);
 
+        // change window size to match settings
+        ofSetWindowShape(600 / screen_height * screen_width, 600);
+
         // osc receiving
         port = xml.getValue("oscport", 12345);
 
@@ -379,7 +388,8 @@ void ofApp::setupGraphics() {
     // fade
     fade = 0.0;
 
-    float fbowidth = subheight /  SCREEN_HEIGHT * SCREEN_WIDTH;
+    // float fbowidth = subheight /  SCREEN_HEIGHT * SCREEN_WIDTH;
+    float fbowidth = subheight / screen_height * screen_width;
     float fboheight = subheight; 
 
     // allocate fbos

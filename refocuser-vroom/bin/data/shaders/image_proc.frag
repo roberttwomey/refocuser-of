@@ -23,7 +23,7 @@ out vec4 fragColor;
 
 vec3 rgb2hsv(vec3 c)
 {
-    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    vec4    K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
 
 //    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
 //    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
@@ -104,7 +104,7 @@ vec3 yuv2rgb(vec3 yuv) {
 
 void main()
 {
-    // vec3 color = texture2DRect(img_tex, .st).rgb;
+    // vec3 color = texture2DRect(img_tex, gl_TexCoord[0].st).rgb;
     // vec3 color = texture(img_tex, texcoord.xy).rgb;
     vec3 color = texture(img_tex, gl_FragCoord.xy).rgb;
 
