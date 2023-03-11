@@ -96,34 +96,34 @@ void ofApp::update(){
 
 
 
-	if(bImageProc) {
-		// image post-processing
+        if(bImageProc) {
+            // image post-processing
 
-        maskFbo->begin();
-        ofClear(255, 0, 0, 255);
-        maskFbo->end();
+            maskFbo->begin();
+            ofClear(255, 0, 0, 255);
+            maskFbo->end();
 
 
-        image_fbo->begin();
-        ofClear(0, 0, 0, 255);
+            image_fbo->begin();
+            ofClear(0, 0, 0, 255);
 
-        image_shader.begin();
+            image_shader.begin();
 
-        image_shader.setUniformTexture("img_tex", fbo->getTextureReference(), 13);
-        image_shader.setUniform1f("desaturate", desaturate);
-        image_shader.setUniform1f("minInput", minInput);
-        image_shader.setUniform1f("maxInput", maxInput);
-        image_shader.setUniform1f("gamma", gamma);
-        image_shader.setUniform1f("minOutput", minOutput);
-        image_shader.setUniform1f("maxOutput", maxOutput);
-        image_shader.setUniform1f("brightness", brightness);
-        image_shader.setUniform1f("contrast", contrast);
+            image_shader.setUniformTexture("img_tex", fbo->getTextureReference(), 13);
+            image_shader.setUniform1f("desaturate", desaturate);
+            image_shader.setUniform1f("minInput", minInput);
+            image_shader.setUniform1f("maxInput", maxInput);
+            image_shader.setUniform1f("gamma", gamma);
+            image_shader.setUniform1f("minOutput", minOutput);
+            image_shader.setUniform1f("maxOutput", maxOutput);
+            image_shader.setUniform1f("brightness", brightness);
+            image_shader.setUniform1f("contrast", contrast);
 
-        maskFbo->draw(0,0);
+            maskFbo->draw(0,0);
 
-        image_shader.end();
+            image_shader.end();
 
-        image_fbo->end();
+            image_fbo->end();
         }
 
 	}
@@ -462,9 +462,9 @@ void ofApp::setupGraphics() {
 
             // initialize shader
             ofLog(OF_LOG_NOTICE, "initializing refocusshader[" + ofToString(i) + "]");
-//            shader[i].setupShaderFromFile(GL_FRAGMENT_SHADER, "./shaders/refocus_per_tile_120.frag");
-            shader[i].setupShaderFromFile(GL_FRAGMENT_SHADER, "./shaders/refocus_per_tile_150.frag");
-            shader[i].linkProgram();
+            // shader[i].setupShaderFromFile(GL_FRAGMENT_SHADER, "./shaders/refocus_per_tile.frag");
+            shader[i].load("./shaders/coords.vert", "./shaders/refocus_per_tile.frag");
+            // shader[i].linkProgram();
 
             shader[i].begin();
 
@@ -493,8 +493,9 @@ void ofApp::setupGraphics() {
 
     // set up combine shader to combine the four refocus fbos
     ofLog(OF_LOG_NOTICE, "initializing combine shader. have created " + ofToString(tn) + " textures so far");
-    combineShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "./shaders/blend_tiles_150.frag");
-    combineShader.linkProgram();
+    // combineShader.setupShaderFromFile(GL_FRAGMENT_SHADER, "./shaders/blend_tiles.frag");
+    combineShader.load("./shaders/coords.vert", "./shaders/blend_tiles.frag");
+    // combineShader.linkProgram();
 
     combineShader.begin();
     combineShader.setUniform1i("numtextures", numlftextures);
@@ -522,37 +523,11 @@ void ofApp::setupGraphics() {
 
 
     // setup image processing shader
-    image_shader.setupShaderFromFile(GL_FRAGMENT_SHADER, "./shaders/image_proc_150.frag");
-    image_shader.linkProgram();
-
-
-    //    GLint maxTextureSize;
-    //    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
-    //    std::cout <<"Max texture size: " << maxTextureSize << std::endl;
-
-    //        GLint v_maj;
-    //    glGetIntegerv(GL_MAJOR_VERSION, &v_maj);
-    //        std::cout <<"gl major version: " << v_maj << std::endl;
+    image_shader.load("./shaders/coords.vert", "./shaders/image_proc.frag");
+    // image_shader.setupShaderFromFile(GL_FRAGMENT_SHADER, "./shaders/image_proc.frag");
+    // image_shader.linkProgram();
 
 }
-
-//void ofApp::updateAperture() {
-//
-//    // set pixels to 1.0 for used, 0.0 for not used
-//    for (int x=0; x < xsubimages; x++) {
-//        for(int y=0; y < ysubimages; y++) {
-//            int i = x + y * xsubimages;
-//            if(ofInRange(x, xstart, xcount) && ofInRange(y, ystart, ycount)) {
-//                aperture_mask[i*3] = 1.0;
-//            } else {
-//                aperture_mask[i*3] = 0.0;
-//            }
-//        }
-//    }
-//
-//    // update aperture on graphics card
-//    aperture_mask_tex.getTextureReference().loadData(aperture_mask, xsubimages, ysubimages, GL_RGB);
-//}
 
 //--------------------------------------------------------------
 //  keyboard interaction / osc control
@@ -587,6 +562,7 @@ void ofApp::keyPressed(int key){
     // image processing
     if(key=='I') {
         bImageProc = !bImageProc;
+        ofLog(OF_LOG_NOTICE, "image processing "+ofToString(bImageProc));
     }
     if(key=='1') {
         minInput = ofClamp(ofMap(mouseX, 0.0, ofGetWindowWidth(), 0.0, 1.01), 0.0, 1.0);

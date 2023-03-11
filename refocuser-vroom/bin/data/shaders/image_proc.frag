@@ -1,4 +1,4 @@
-#version 120
+#version 150
 
 // combined desaturation and realtime levels/gamma adjustment
 //
@@ -18,6 +18,7 @@ uniform float maxOutput;
 uniform float brightness;
 uniform float contrast;
 
+in vec2 texcoord;
 out vec4 fragColor;
 
 vec3 rgb2hsv(vec3 c)
@@ -103,7 +104,9 @@ vec3 yuv2rgb(vec3 yuv) {
 
 void main()
 {
-    vec3 color = texture2DRect(img_tex,gl_TexCoord[0].st).rgb;
+    // vec3 color = texture2DRect(img_tex, .st).rgb;
+    // vec3 color = texture(img_tex, texcoord.xy).rgb;
+    vec3 color = texture(img_tex, gl_FragCoord.xy).rgb;
 
 
     // rgb -> yuv
@@ -154,6 +157,12 @@ void main()
 //    vec3 bright = colorContrasted + vec3(brightness);
 //    color = bright;
 
-    gl_FragColor = vec4(color, 1.0);
-    // fragColor = vec4(color, 1.0);
+    // gl_FragColor = vec4(color, 1.0);
+    fragColor = vec4(color, 1.0);
+
+    // test uniforms
+    // fragColor = vec4(brightness, contrast, gamma, 1.0);
+
+    // test coords / colors
+    // fragColor = vec4(gl_FragCoord.x/700.0, gl_FragCoord.y/300.0, 0.0, 1.0);   
 }
